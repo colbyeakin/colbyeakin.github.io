@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Inter, Roboto_Mono } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import "../styles/globals.css";
 import NavBar from "../components/navbar";
 import Header from "../components/header";
 import Footer from "../components/footer";
 
 const inter = Inter({
-  variable: "--font-inter",
   subsets: ["latin"],
+  variable: "--font-body",
 });
 
-const robotoMono = Roboto_Mono({
-  variable: "--font-roboto-mono",
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
+  variable: "--font-heading",
 });
 
 export const metadata: Metadata = {
@@ -26,26 +26,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  const storedTheme = localStorage.getItem('site-theme');
-                  const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-                  const theme = storedTheme || (prefersLight ? 'light' : 'dark');
-                  document.documentElement.setAttribute('data-theme', theme);
-                } catch (e) {
-                  document.documentElement.setAttribute('data-theme', 'dark');
-                }
-              })();
-            `,
-          }}
-        />
-      </head>
-      <body className={`${inter.variable} ${robotoMono.variable} antialiased`}>
+    <html lang="en">
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-body`}>
         <Header />
         {children}
         <footer>

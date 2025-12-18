@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const MOBILE_BREAKPOINT = 480; // px
 
@@ -23,27 +24,39 @@ const NavBar: React.FC = () => {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  // 🌟 Wait until mounted before rendering dynamic UI
+  // Wait until mounted before rendering dynamic UI
   if (!isMounted) return null;
 
   return (
     <div className={isMobile ? "flex justify-start py-2 px-0" : "flex justify-end py-2"}>
-      <nav className="rounded-full px-4 py-2 relative nav-bg shadow-md border border-var" aria-label="Main Navigation">
+      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
         {/* Desktop nav */}
         {!isMobile && (
-          <ul className="flex space-x-6 text-sm font-medium nav-text">
-            <li><a href="/" className="transition duration-200 hover:underline">Home</a></li>
-            <li><a href="/about" className="transition duration-200 hover:underline">About</a></li>
-            <li><a href="/projects" className="transition duration-200 hover:underline">Projects</a></li>
-            <li><a href="/contact" className="transition duration-200 hover:underline">Contact</a></li>
-          </ul>
+          <motion.ul
+            className="flex gap-8 px-6 py-3 backdrop-blur-md bg-bg-secondary/60 rounded-full border border-divider"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+            <motion.li whileHover={{y: -2}}>
+              <a href="#origins" className="nav-link">Origins</a>
+            </motion.li>
+            <motion.li whileHover={{y: -2}}>
+              <a href="#innovation" className="nav-link">Innovation</a>
+            </motion.li>
+            <motion.li whileHover={{y: -2}}>
+              <a href="#tomorrow" className="nav-link">Tomorrow</a>
+            </motion.li>
+          </motion.ul>
         )}
 
         {/* Mobile hamburger */}
         {isMobile && (
           <div className="flex items-center">
-            <button
+            <motion.button
               onClick={() => setMenuOpen((s) => !s)}
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.05 }}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -58,7 +71,7 @@ const NavBar: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               )}
-            </button>
+            </motion.button>
           </div>
         )}
 
