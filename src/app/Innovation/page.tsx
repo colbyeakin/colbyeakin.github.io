@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react"
 import ProjectCard from "@/src/components/projectCard"
 import { projects } from "@/src/data/projects";
