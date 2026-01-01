@@ -13,7 +13,11 @@ type ProjectCardProps = {
     previewImage?: string;
     githubUrl?: string;
     liveUrl?: string;
+
     compact?: boolean;
+    isExpanded: boolean;
+    isLocked: boolean;
+    onToggle: () => void;
 };
 
 export default function ProjectCard({
@@ -26,13 +30,16 @@ export default function ProjectCard({
     githubUrl,
     liveUrl,
     compact = false,
+    isExpanded,
+    isLocked,
+    onToggle
+
 }: ProjectCardProps) {
-    const [expanded, setExpanded] = useState(false);
-    const cardRef = useRef<HTMLElement | null>(null);
+   const cardRef = useRef<HTMLElement | null>(null);
 
 
     useEffect(() => {
-        if (!expanded || !cardRef.current) return;
+        if (!isExpanded || !cardRef.current) return;
 
         const prefersReducedMotion = window.matchMedia(
             "(prefers-reduced-motion: reduce)"
@@ -42,12 +49,14 @@ export default function ProjectCard({
             behavior: prefersReducedMotion ? "auto" : "smooth",
             block: "start",
         });
-    }, [expanded]);
+    }, [isExpanded]);
 
     return (
         <article 
             ref={cardRef}
-            className={`space-y-4 border border-divider rounded-md p-5 scroll-mt-32 ${compact ? "max-w-md" : "max-w-4xl"}`}
+            className={`space-y-4 border border-divider rounded-md p-5 scroll-mt-32 
+                        ${compact ? "max-w-md" : "max-w-4xl"}
+                    `}
         >
             {/* Header Section */}
             <header>
@@ -92,7 +101,7 @@ export default function ProjectCard({
             </p>
 
             {/* Expandable Content */}
-            {expanded && (
+            {isExpanded && (
                 <div className="space-y-3 text-sm text-text-secondary leading-relaxed">
                     {details}
                 </div>
@@ -101,10 +110,10 @@ export default function ProjectCard({
             {/* Actions */}
             <div className="flex items-center justify-between pt-2">
                 <button
-                    onClick={() => setExpanded(!expanded)}
+                    onClick={onToggle}
                     className="focus-ring text-sm text-accent hover:underline"                
                 >
-                    {expanded ? "Show less ↑" : "Read more →"}
+                    {isExpanded ? "Show less ↑" : "Read more →"}
                 </button>
 
                 <div className="flex gap-4 text-sm">
